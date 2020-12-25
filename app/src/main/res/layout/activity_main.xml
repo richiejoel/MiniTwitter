@@ -4,15 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlue"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_logo_minitwitter_white"
+        android:layout_marginTop="32dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+    <EditText
+        android:id="@+id/loginEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="@string/hint_email"
+        android:layout_marginTop="36dp"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@color/colorBlueDark"
+        android:textColorHint="@color/colorBlueDark"
+        android:textColorLink="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo"
+        app:layout_constraintLeft_toLeftOf="@id/imgLogo"
+        app:layout_constraintRight_toRightOf="@id/imgLogo"
+        app:layout_constraintHorizontal_bias="0.5"
+        />
+
+    <EditText
+        android:id="@+id/loginPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="@string/hint_password"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@color/colorBlueDark"
+        android:textColorHint="@color/colorBlueDark"
+        android:textColorLink="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/loginEmail"
+        app:layout_constraintLeft_toLeftOf="@id/loginEmail"
+        app:layout_constraintRight_toRightOf="@id/loginEmail"
+        app:layout_constraintHorizontal_bias="0.5"
+        />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_login"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@android:color/white"
+        android:textColor="@color/colorBlue"
+        app:layout_constraintTop_toBottomOf="@id/loginPassword"
+        app:layout_constraintLeft_toLeftOf="@id/loginPassword"
+        app:layout_constraintRight_toRightOf="@id/loginPassword"
+        app:layout_constraintHorizontal_bias="0.5"
+        />
+
+    <TextView
+        android:id="@+id/txtCreateAccount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_create_account"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/btnLogin"
+        app:layout_constraintLeft_toLeftOf="@id/btnLogin"
+        app:layout_constraintRight_toRightOf="@id/btnLogin"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="40dp"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
