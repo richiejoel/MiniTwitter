@@ -1,6 +1,9 @@
 package com.heavy.minitwitter;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,4 +46,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Intent goLogin = new Intent(SignUpActivity.this, MainActivity.class);
         startActivity(goLogin);
     }
+
+
 }
