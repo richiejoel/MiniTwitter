@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlue"
-    tools:context=".MainActivity">
+    tools:context=".SignUpActivity">
 
     <ImageView
-        android:id="@+id/imgLogo"
+        android:id="@+id/imgLogo_signup"
         android:layout_width="300dp"
         android:layout_height="100dp"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,24 +21,41 @@
         />
 
     <EditText
-        android:id="@+id/loginEmail"
+        android:id="@+id/signupUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="@string/hint_email"
+        android:hint="@string/hint_username"
         android:layout_marginTop="36dp"
         android:textColor="@android:color/white"
         android:textColorHighlight="@color/colorBlueDark"
         android:textColorHint="@color/colorBlueDark"
         android:textColorLink="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/imgLogo"
-        app:layout_constraintLeft_toLeftOf="@id/imgLogo"
-        app:layout_constraintRight_toRightOf="@id/imgLogo"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo_signup"
+        app:layout_constraintLeft_toLeftOf="@id/imgLogo_signup"
+        app:layout_constraintRight_toRightOf="@id/imgLogo_signup"
+        app:layout_constraintHorizontal_bias="0.5"
         />
 
     <EditText
-        android:id="@+id/loginPassword"
+        android:id="@+id/signupEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="@string/hint_email"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/white"
+        android:textColorHighlight="@color/colorBlueDark"
+        android:textColorHint="@color/colorBlueDark"
+        android:textColorLink="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/signupUsername"
+        app:layout_constraintLeft_toLeftOf="@id/signupUsername"
+        app:layout_constraintRight_toRightOf="@id/signupUsername"
+        app:layout_constraintHorizontal_bias="0.5"
+        />
+
+    <EditText
+        android:id="@+id/signupPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
@@ -48,40 +65,38 @@
         android:textColorHighlight="@color/colorBlueDark"
         android:textColorHint="@color/colorBlueDark"
         android:textColorLink="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/loginEmail"
-        app:layout_constraintLeft_toLeftOf="@id/loginEmail"
-        app:layout_constraintRight_toRightOf="@id/loginEmail"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/signupEmail"
+        app:layout_constraintLeft_toLeftOf="@id/signupEmail"
+        app:layout_constraintRight_toRightOf="@id/signupEmail"
+        app:layout_constraintHorizontal_bias="0.5"
         />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnSignUp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/btn_login"
+        android:text="@string/btn_signup"
         android:layout_marginTop="16dp"
         android:backgroundTint="@android:color/white"
         android:textColor="@color/colorBlue"
-        app:layout_constraintTop_toBottomOf="@id/loginPassword"
-        app:layout_constraintLeft_toLeftOf="@id/loginPassword"
-        app:layout_constraintRight_toRightOf="@id/loginPassword"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/signupPassword"
+        app:layout_constraintLeft_toLeftOf="@id/signupPassword"
+        app:layout_constraintRight_toRightOf="@id/signupPassword"
+        app:layout_constraintHorizontal_bias="0.5"
         />
 
     <TextView
-        android:id="@+id/txtCreateAccount"
+        android:id="@+id/txtLoginGo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/txt_create_account"
+        android:text="@string/txt_login_note"
         android:textColor="@android:color/white"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin"
-        app:layout_constraintLeft_toLeftOf="@id/btnLogin"
-        app:layout_constraintRight_toRightOf="@id/btnLogin"
-        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/btnSignUp"
+        app:layout_constraintLeft_toLeftOf="@id/btnSignUp"
+        app:layout_constraintRight_toRightOf="@id/btnSignUp"
+        app:layout_constraintHorizontal_bias="0.5"
         android:layout_marginTop="40dp"
         />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

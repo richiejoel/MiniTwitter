@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">MiniTwitter</string>
 
-    <!-- Pantalla Login -->
+    <!-- Screen Login -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="btn_login">Login</string>
     <string name="txt_create_account">If you have not account, register here</string>
+
+    <!-- Screen SignUp -->
+    <string name="hint_username">Username</string>
+    <string name="txt_login_note">If you have a account, login here</string>
+    <string name="btn_signup">Sign Up</string>
 
 </resources>
