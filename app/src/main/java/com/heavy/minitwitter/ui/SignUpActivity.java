@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.heavy.minitwitter.R;
+import com.heavy.minitwitter.common.Constants;
+import com.heavy.minitwitter.common.SharedPreferencesManager;
 import com.heavy.minitwitter.retrofit.MiniTwitterClient;
 import com.heavy.minitwitter.retrofit.MiniTwitterService;
 import com.heavy.minitwitter.retrofit.request.RequestSignUp;
@@ -100,8 +102,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 public void onResponse(Call<ResponseSignUp> call, Response<ResponseSignUp> response) {
                     if(response.isSuccessful()){
                         Toast.makeText(getApplicationContext(), "Create Account Successfull", Toast.LENGTH_SHORT).show();
-                        Intent goLogin = new Intent(SignUpActivity.this, MainActivity.class);
-                        startActivity(goLogin);
+
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_TOKEN, response.body().getToken());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_USERNAME, response.body().getUsername());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_EMAIL, response.body().getEmail());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_PHOTOURL, response.body().getPhotoUrl());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_DATE_CREATED, response.body().getCreated());
+                        SharedPreferencesManager.setSomeBooleanValue(Constants.PREF_ACTIVE, response.body().getActive());
+
+                        Intent goDashboard = new Intent(SignUpActivity.this, DashboardActivity.class);
+                        startActivity(goDashboard);
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Email or Password incorrect",Toast.LENGTH_SHORT).show();

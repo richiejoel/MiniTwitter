@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.heavy.minitwitter.R;
+import com.heavy.minitwitter.common.Constants;
+import com.heavy.minitwitter.common.SharedPreferencesManager;
 import com.heavy.minitwitter.retrofit.MiniTwitterClient;
 import com.heavy.minitwitter.retrofit.MiniTwitterService;
 import com.heavy.minitwitter.retrofit.request.RequestLogin;
@@ -79,9 +81,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(email.isEmpty()){
             edtLoginEmail.setError("Email is required");
-        } else if(password.isEmpty()){
+        }
+        if(password.isEmpty()){
             edtLoginPassword.setError("Password is required");
-        } else {
+        }
+
+        if(!email.isEmpty() && !password.isEmpty()){
             RequestLogin requestLogin = new RequestLogin(email, password);
 
             Call<ResponseLogin> call = miniTwitterService.mDoLogin(requestLogin);
@@ -90,6 +95,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
                     if(response.isSuccessful()){
                         Toast.makeText(getApplicationContext(), "Login Successfull", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_TOKEN, response.body().getToken());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_USERNAME, response.body().getUsername());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_EMAIL, response.body().getEmail());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_PHOTOURL, response.body().getPhotoUrl());
+                        SharedPreferencesManager.setSomeStringValue(Constants.PREF_DATE_CREATED, response.body().getCreated());
+                        SharedPreferencesManager.setSomeBooleanValue(Constants.PREF_ACTIVE, response.body().getActive());
+
                         Intent goDashboard = new Intent(MainActivity.this, DashboardActivity.class);
                         startActivity(goDashboard);
                         finish();
