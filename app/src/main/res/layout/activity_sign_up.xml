@@ -24,7 +24,6 @@
         android:id="@+id/signupUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
         android:hint="@string/hint_username"
         android:layout_marginTop="36dp"
         android:textColor="@android:color/white"

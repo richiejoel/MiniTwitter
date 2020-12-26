@@ -18,7 +18,6 @@ public interface MiniTwitterService {
     Call<ResponseLogin> mDoLogin(@Body RequestLogin requestLogin);
 
     @Headers("Content-Type: application/json")
-    @FormUrlEncoded
     @POST("auth/signup")
     Call<ResponseSignUp> mDoSignUp(@Body RequestSignUp requestSignUp);
 }
