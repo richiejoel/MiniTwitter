@@ -11,5 +11,9 @@
     <string name="hint_username">Username</string>
     <string name="txt_login_note">If you have a account, login here</string>
     <string name="btn_signup">Sign Up</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>
