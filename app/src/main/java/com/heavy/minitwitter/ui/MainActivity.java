@@ -16,9 +16,6 @@ import com.heavy.minitwitter.retrofit.MiniTwitterService;
 import com.heavy.minitwitter.retrofit.request.RequestLogin;
 import com.heavy.minitwitter.retrofit.response.ResponseLogin;
 
-import org.conscrypt.Conscrypt;
-
-import java.security.Security;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if(password.isEmpty()){
             edtLoginPassword.setError("Password is required");
         } else {
-            Security.insertProviderAt(Conscrypt.newProvider(), 1);
             RequestLogin requestLogin = new RequestLogin(email, password);
 
             Call<ResponseLogin> call = miniTwitterService.mDoLogin(requestLogin);
