@@ -1,4 +1,4 @@
-package com.heavy.minitwitter.ui.ui.notifications;
+package com.heavy.minitwitter.ui.ui.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,15 +15,15 @@ import androidx.lifecycle.ViewModelProviders;
 import com.heavy.minitwitter.R;
 
 
-public class NotificationsFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private ProfileViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+                ViewModelProviders.of(this).get(ProfileViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_profile, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

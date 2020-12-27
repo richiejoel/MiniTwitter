@@ -4,10 +4,12 @@ import com.heavy.minitwitter.retrofit.request.RequestLogin;
 import com.heavy.minitwitter.retrofit.request.RequestSignUp;
 import com.heavy.minitwitter.retrofit.response.ResponseLogin;
 import com.heavy.minitwitter.retrofit.response.ResponseSignUp;
+import com.heavy.minitwitter.retrofit.response.Tweet;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
