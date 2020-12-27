@@ -16,4 +16,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <!-- toolbar_title_home -->
+    <string name="toolbar_title_home">Title</string>
+
 </resources>
