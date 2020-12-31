@@ -11,11 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heavy.minitwitter.R;
+import com.heavy.minitwitter.data.TweetViewModel;
 import com.heavy.minitwitter.retrofit.AuthMiniTwitterClient;
 import com.heavy.minitwitter.retrofit.AuthMiniTwitterService;
 import com.heavy.minitwitter.retrofit.response.Tweet;
@@ -34,8 +36,7 @@ public class HomeFragment extends Fragment {
     private List<Tweet> tweetList;
     private RecyclerView recyclerViewTweets;
     private MyTweetAdapter adapter;
-    private AuthMiniTwitterClient authMiniTwitterClient;
-    private AuthMiniTwitterService authMiniTwitterService;
+    private TweetViewModel tweetViewModel;
 
     /*private HomeViewModel homeViewModel;
 
@@ -63,40 +64,30 @@ public class HomeFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        this.tweetViewModel = new ViewModelProvider(this).get(TweetViewModel.class);
         tweetList = new ArrayList<Tweet>();
         recyclerViewTweets = view.findViewById(R.id.recyclerTweets);
         recyclerViewTweets.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        retrofitInit();
+        adapter = new MyTweetAdapter((ArrayList<Tweet>) tweetList, getContext());
+        recyclerViewTweets.setAdapter(adapter);
+
         loadTweets();
 
         return view;
     }
 
-    private void retrofitInit() {
-        authMiniTwitterClient = AuthMiniTwitterClient.getInstance();
-        authMiniTwitterService = authMiniTwitterClient.getAuthMiniTwitterService();
-    }
+
 
     private void loadTweets(){
-        Call<List<Tweet>> call = authMiniTwitterService.mDoAllGetTweets();
-        call.enqueue(new Callback<List<Tweet>>() {
+        this.tweetViewModel.getTweets().observe(getActivity(), new Observer<List<Tweet>>() {
             @Override
-            public void onResponse(Call<List<Tweet>> call, Response<List<Tweet>> response) {
-                if (response.isSuccessful()){
-                    tweetList = response.body();
-                    adapter = new MyTweetAdapter((ArrayList<Tweet>) tweetList, getContext());
-                    recyclerViewTweets.setAdapter(adapter);
-                } else {
-                    Toast.makeText(getContext(), "Error in Sever. Try again later", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Tweet>> call, Throwable t) {
-                Toast.makeText(getContext(), "Trouble connection. Try again please.", Toast.LENGTH_SHORT).show();
+            public void onChanged(List<Tweet> tweets) {
+                tweetList = tweets;
+                adapter.setData(tweetList);
             }
         });
+
     }
 
 }

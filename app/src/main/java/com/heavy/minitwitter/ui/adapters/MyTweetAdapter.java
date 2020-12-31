@@ -20,6 +20,7 @@ import com.heavy.minitwitter.retrofit.response.Like;
 import com.heavy.minitwitter.retrofit.response.Tweet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,36 +46,51 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
 
     @Override
     public void onBindViewHolder(@NonNull MyTweetAdapter.MyTweetViewHolder holder, int position) {
-        holder.tweet = listTweet.get(position);
-        holder.txtMessage.setText(holder.tweet.getMensaje());
-        holder.txtUsername.setText(holder.tweet.getUser().getUsername());
-        holder.txtViewLikes.setText(String.valueOf(holder.tweet.getLikes().size()));
 
-        String photo = holder.tweet.getUser().getPhotoUrl();
-        if(!photo.isEmpty()){
-            Glide.with(ctx)
-                    .load("https://www.minitwitter.com/apiv1/uploads/photos/" + photo)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(holder.imgTweetAvatar);
-        }
+        if(!this.listTweet.isEmpty()){
+            holder.tweet = listTweet.get(position);
+            holder.txtMessage.setText(holder.tweet.getMensaje());
+            holder.txtUsername.setText(holder.tweet.getUser().getUsername());
+            holder.txtViewLikes.setText(String.valueOf(holder.tweet.getLikes().size()));
 
-        for(Like like: holder.tweet.getLikes()) {
-            if(like.getUsername().equals(username)) {
+            String photo = holder.tweet.getUser().getPhotoUrl();
+            if(!photo.isEmpty()){
                 Glide.with(ctx)
-                        .load(R.drawable.ic_like_pink)
-                        .into(holder.imgLike);
-                holder.txtViewLikes.setTextColor(ctx.getResources().getColor(R.color.colorPink));
-                holder.txtViewLikes.setTypeface(null, Typeface.BOLD);
-                break;
+                        .load("https://www.minitwitter.com/apiv1/uploads/photos/" + photo)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(holder.imgTweetAvatar);
+            }
+
+            for(Like like: holder.tweet.getLikes()) {
+                if(like.getUsername().equals(username)) {
+                    Glide.with(ctx)
+                            .load(R.drawable.ic_like_pink)
+                            .into(holder.imgLike);
+                    holder.txtViewLikes.setTextColor(ctx.getResources().getColor(R.color.colorPink));
+                    holder.txtViewLikes.setTypeface(null, Typeface.BOLD);
+                    break;
+                }
             }
         }
 
     }
 
+    public void setData(List<Tweet> tweetList){
+        this.listTweet = (ArrayList<Tweet>) tweetList;
+        notifyDataSetChanged();
+
+    }
+
     @Override
     public int getItemCount() {
-        return this.listTweet.size();
+
+        if(!this.listTweet.isEmpty()){
+            return this.listTweet.size();
+        } else {
+            return 0;
+        }
+
     }
 
     public class MyTweetViewHolder extends RecyclerView.ViewHolder {
