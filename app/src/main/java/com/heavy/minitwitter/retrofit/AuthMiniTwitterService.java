@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface AuthMiniTwitterService {
 
@@ -21,5 +22,9 @@ public interface AuthMiniTwitterService {
     @Headers("Content-Type: application/json")
     @POST("tweets/create")
     Call<Tweet> mDoCreateTweet(@Body RequestCreateTweet requestCreateTweet);
+
+    @Headers("Content-Type: application/json")
+    @POST("tweets/like/{idTweet}")
+    Call<Tweet> mDoLikeDislikeTweet(@Path("idTweet") int idTweet);
 
 }

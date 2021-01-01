@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.heavy.minitwitter.R;
 import com.heavy.minitwitter.common.Constants;
 import com.heavy.minitwitter.common.SharedPreferencesManager;
+import com.heavy.minitwitter.data.TweetViewModel;
 import com.heavy.minitwitter.retrofit.response.Like;
 import com.heavy.minitwitter.retrofit.response.Tweet;
 
@@ -29,11 +32,13 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
     private ArrayList<Tweet> listTweet;
     private Context ctx;
     String username;
+    TweetViewModel tweetViewModel;
 
     public MyTweetAdapter(ArrayList<Tweet> listTweet, Context ctx){
         this.listTweet = listTweet;
         this.ctx = ctx;
         this.username = SharedPreferencesManager.getSomeStringValue(Constants.PREF_USERNAME);
+        this.tweetViewModel = ViewModelProviders.of((FragmentActivity) ctx).get(TweetViewModel.class);
     }
 
     @NonNull
@@ -52,6 +57,13 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
             holder.txtMessage.setText(holder.tweet.getMensaje());
             holder.txtUsername.setText("@" + holder.tweet.getUser().getUsername());
             holder.txtViewLikes.setText(String.valueOf(holder.tweet.getLikes().size()));
+
+            holder.imgLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tweetViewModel.mLikeDislikeTweet(holder.tweet.getId());
+                }
+            });
 
             String photo = holder.tweet.getUser().getPhotoUrl();
             if(!photo.isEmpty()){

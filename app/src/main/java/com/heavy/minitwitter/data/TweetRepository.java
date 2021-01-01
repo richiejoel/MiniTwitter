@@ -93,4 +93,32 @@ public class TweetRepository {
             }
         });
     }
+
+    public void mLikeDislikeTweet(int idTweet){
+        Call<Tweet> call = authMiniTwitterService.mDoLikeDislikeTweet(idTweet);
+        call.enqueue(new Callback<Tweet>() {
+            @Override
+            public void onResponse(Call<Tweet> call, Response<Tweet> response) {
+                if(response.isSuccessful()){
+                    List<Tweet> tweetsCurrently = new ArrayList<>();
+                    for(int i=0; i < tweetList.getValue().size(); i++ ){
+                        if(tweetList.getValue().get(i).getId().equals(idTweet)){
+                            tweetsCurrently.add(response.body());
+                        } else {
+                            tweetsCurrently.add(new Tweet(tweetList.getValue().get(i)));
+                        }
+                    }
+                    tweetList.setValue(tweetsCurrently);
+
+                } else {
+                    Toast.makeText(MyApp.getContext(), "Error in Sever. Try again later", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tweet> call, Throwable t) {
+                Toast.makeText(MyApp.getContext(), "Trouble connection. Try again please.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
