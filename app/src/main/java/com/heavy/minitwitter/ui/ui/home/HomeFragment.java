@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.heavy.minitwitter.R;
 import com.heavy.minitwitter.data.TweetViewModel;
@@ -37,6 +38,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerViewTweets;
     private MyTweetAdapter adapter;
     private TweetViewModel tweetViewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     /*private HomeViewModel homeViewModel;
 
@@ -74,10 +76,21 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         tweetList = new ArrayList<Tweet>();
         recyclerViewTweets = view.findViewById(R.id.recyclerTweets);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlue));
         recyclerViewTweets.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new MyTweetAdapter((ArrayList<Tweet>) tweetList, getContext());
         recyclerViewTweets.setAdapter(adapter);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                loadNewTweets();
+            }
+        });
 
         loadTweets();
 
@@ -97,19 +110,17 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public RecyclerView getRecyclerViewTweets() {
-        return recyclerViewTweets;
+    private void loadNewTweets(){
+        this.tweetViewModel.getNewTweets().observe(getActivity(), new Observer<List<Tweet>>() {
+            @Override
+            public void onChanged(List<Tweet> tweets) {
+                tweetList = tweets;
+                swipeRefreshLayout.setRefreshing(false);
+                adapter.setData(tweetList);
+                tweetViewModel.getNewTweets().removeObserver(this);
+            }
+        });
+
     }
 
-    public void setRecyclerViewTweets(RecyclerView recyclerViewTweets) {
-        this.recyclerViewTweets = recyclerViewTweets;
-    }
-
-    public MyTweetAdapter getAdapter() {
-        return adapter;
-    }
-
-    public void setAdapter(MyTweetAdapter adapter) {
-        this.adapter = adapter;
-    }
 }

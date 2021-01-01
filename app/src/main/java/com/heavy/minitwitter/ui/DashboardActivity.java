@@ -44,6 +44,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(imageViewToolbarPhoto);
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.ic_account_circle_gray_24dp)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(imageViewToolbarPhoto);
         }
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(

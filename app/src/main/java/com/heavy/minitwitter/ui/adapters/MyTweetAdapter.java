@@ -50,7 +50,7 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
         if(!this.listTweet.isEmpty()){
             holder.tweet = listTweet.get(position);
             holder.txtMessage.setText(holder.tweet.getMensaje());
-            holder.txtUsername.setText(holder.tweet.getUser().getUsername());
+            holder.txtUsername.setText("@" + holder.tweet.getUser().getUsername());
             holder.txtViewLikes.setText(String.valueOf(holder.tweet.getLikes().size()));
 
             String photo = holder.tweet.getUser().getPhotoUrl();
@@ -61,6 +61,12 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
                         .skipMemoryCache(true)
                         .into(holder.imgTweetAvatar);
             }
+
+            Glide.with(ctx)
+                    .load(R.drawable.ic_like)
+                    .into(holder.imgLike);
+            holder.txtViewLikes.setTextColor(ctx.getResources().getColor(android.R.color.black));
+            holder.txtViewLikes.setTypeface(null, Typeface.NORMAL);
 
             for(Like like: holder.tweet.getLikes()) {
                 if(like.getUsername().equals(username)) {
