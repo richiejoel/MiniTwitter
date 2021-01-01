@@ -4,6 +4,7 @@ public class Constants {
 
     //Network
     public static final String API_MINITWITTER_URL_BASE = "https://www.minitwitter.com:3001/apiv1/";
+    public static final String API_MINITWITTER_FILES_URL = "https://www.minitwitter.com/apiv1/uploads/photos/";
 
     //Constantes Prefencias
     public static final String PREF_TOKEN = "PREF_TOKEN";

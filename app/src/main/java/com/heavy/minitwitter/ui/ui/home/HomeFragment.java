@@ -60,11 +60,18 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.tweetViewModel = new ViewModelProvider(this).get(TweetViewModel.class);
+
+    }
+
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        this.tweetViewModel = new ViewModelProvider(this).get(TweetViewModel.class);
         tweetList = new ArrayList<Tweet>();
         recyclerViewTweets = view.findViewById(R.id.recyclerTweets);
         recyclerViewTweets.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -90,4 +97,19 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public RecyclerView getRecyclerViewTweets() {
+        return recyclerViewTweets;
+    }
+
+    public void setRecyclerViewTweets(RecyclerView recyclerViewTweets) {
+        this.recyclerViewTweets = recyclerViewTweets;
+    }
+
+    public MyTweetAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(MyTweetAdapter adapter) {
+        this.adapter = adapter;
+    }
 }

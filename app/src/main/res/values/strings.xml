@@ -19,4 +19,12 @@
     <!-- toolbar_title_home -->
     <string name="toolbar_title_home">Title</string>
 
+    <!-- Dialog Tweet -->
+    <string name="dialog_close">Tweeter</string>
+    <string name="dialog_messege">What\'s going on?</string>
+    <string name="dialog_message_confirm">Are you sure to drop this tweet?</string>
+    <string name="dialog_title_confirm">Cancel Tweet</string>
+    <string name="dialog_btn_delete_confirm">OK, Fine</string>
+    <string name="dialog_btn_cancel_confirm">Cancel</string>
+
 </resources>
