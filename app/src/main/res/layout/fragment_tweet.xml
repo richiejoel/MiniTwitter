@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,6 +16,8 @@
         android:paddingLeft="8dp"
         android:paddingEnd="8dp"
         android:paddingRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -39,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="Message"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="@+id/txtUsername"
         app:layout_constraintTop_toBottomOf="@id/txtUsername"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +66,28 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/imgLike"
         app:layout_constraintStart_toEndOf="@+id/imgLike"
-        app:layout_constraintTop_toTopOf="@+id/imgLike" />
+        app:layout_constraintTop_toTopOf="@+id/imgLike"
+        />
 
+    <ImageView
+        android:id="@+id/imgShowMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtUsername"
+        app:srcCompat="@drawable/ic_keyboard_arrow_down_gray_24dp"
+        />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="#DDDDDD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLike" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

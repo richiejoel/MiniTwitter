@@ -27,4 +27,7 @@
     <string name="dialog_btn_delete_confirm">OK, Fine</string>
     <string name="dialog_btn_cancel_confirm">Cancel</string>
 
+    <!-- BottomSheet -->
+    <string name="bottom_sheet_delete">Delete Tweet</string>
+
 </resources>

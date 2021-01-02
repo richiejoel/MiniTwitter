@@ -73,4 +73,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         NewTweetDialogFragment dialogFragment = new NewTweetDialogFragment();
         dialogFragment.show(getSupportFragmentManager(),"NewTweetDialogFragment");
     }
+
+    public FloatingActionButton getFab(){
+        return this.fab;
+    }
 }

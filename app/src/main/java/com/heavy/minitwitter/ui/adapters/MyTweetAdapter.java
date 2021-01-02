@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +40,10 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
         this.listTweet = listTweet;
         this.ctx = ctx;
         this.username = SharedPreferencesManager.getSomeStringValue(Constants.PREF_USERNAME);
-        this.tweetViewModel = ViewModelProviders.of((FragmentActivity) ctx).get(TweetViewModel.class);
+        //new ViewModelProvider((ViewModelStoreOwner) getContext()).get(TweetViewModel.class);
+        this.tweetViewModel = new ViewModelProvider((ViewModelStoreOwner) ctx).get(TweetViewModel.class);
+
+        //this.tweetViewModel = ViewModelProviders.of((FragmentActivity) ctx).get(TweetViewModel.class);
     }
 
     @NonNull
@@ -57,11 +62,22 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
             holder.txtMessage.setText(holder.tweet.getMensaje());
             holder.txtUsername.setText("@" + holder.tweet.getUser().getUsername());
             holder.txtViewLikes.setText(String.valueOf(holder.tweet.getLikes().size()));
+            holder.imgShowMenu.setVisibility(View.GONE);
+            if(holder.tweet.getUser().getUsername().equals(username)){
+                holder.imgShowMenu.setVisibility(View.VISIBLE);
+            }
 
             holder.imgLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     tweetViewModel.mLikeDislikeTweet(holder.tweet.getId());
+                }
+            });
+
+            holder.imgShowMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tweetViewModel.openDialogTweetMenu(ctx,holder.tweet.getId());
                 }
             });
 
@@ -114,7 +130,7 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
     public class MyTweetViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtUsername, txtMessage, txtViewLikes;
-        ImageView imgLike;
+        ImageView imgLike, imgShowMenu;
         CircleImageView imgTweetAvatar;
         public Tweet tweet;
 
@@ -125,6 +141,7 @@ public class MyTweetAdapter extends RecyclerView.Adapter<MyTweetAdapter.MyTweetV
             txtViewLikes = itemView.findViewById(R.id.txtViewLikes);
             imgLike = itemView.findViewById(R.id.imgLike);
             imgTweetAvatar = itemView.findViewById(R.id.imgTweetAvatar);
+            imgShowMenu = itemView.findViewById(R.id.imgShowMenu);
         }
 
     }

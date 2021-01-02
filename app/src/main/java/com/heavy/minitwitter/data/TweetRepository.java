@@ -6,13 +6,18 @@ import android.widget.Toast;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.heavy.minitwitter.common.Constants;
 import com.heavy.minitwitter.common.MyApp;
+import com.heavy.minitwitter.common.SharedPreferencesManager;
 import com.heavy.minitwitter.retrofit.AuthMiniTwitterClient;
 import com.heavy.minitwitter.retrofit.AuthMiniTwitterService;
 import com.heavy.minitwitter.retrofit.request.RequestCreateTweet;
+import com.heavy.minitwitter.retrofit.response.Like;
+import com.heavy.minitwitter.retrofit.response.ResponseDeleteTweet;
 import com.heavy.minitwitter.retrofit.response.Tweet;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,12 +29,15 @@ public class TweetRepository {
     private AuthMiniTwitterClient authMiniTwitterClient;
     private AuthMiniTwitterService authMiniTwitterService;
     MutableLiveData<List<Tweet>> tweetList;
+    MutableLiveData<List<Tweet>> tweetFavsList;
+    private String username;
 
 
     public TweetRepository() {
         authMiniTwitterClient = AuthMiniTwitterClient.getInstance();
         authMiniTwitterService = authMiniTwitterClient.getAuthMiniTwitterService();
         tweetList = getTweetList();
+        this.username = SharedPreferencesManager.getSomeStringValue(Constants.PREF_USERNAME);
 
     }
 
@@ -58,6 +66,32 @@ public class TweetRepository {
 
 
         return tweetList;
+    }
+
+    public MutableLiveData<List<Tweet>> getFavsTweets() {
+        if(tweetFavsList == null) {
+            tweetFavsList = new MutableLiveData<>();
+        }
+
+        List<Tweet> newFavList = new ArrayList<>();
+        Iterator itTweets = tweetList.getValue().iterator();
+
+        while(itTweets.hasNext()) {
+            Tweet current = (Tweet) itTweets.next();
+            Iterator itLikes = current.getLikes().iterator();
+            boolean enc = false;
+            while (itLikes.hasNext() && !enc) {
+                Like like = (Like)itLikes.next();
+                if(like.getUsername().equals(username)) {
+                    enc = true;
+                    newFavList.add(current);
+                }
+            }
+        }
+
+        tweetFavsList.setValue(newFavList);
+
+        return tweetFavsList;
     }
 
     public void mCreateTweet(String message){
@@ -109,6 +143,7 @@ public class TweetRepository {
                         }
                     }
                     tweetList.setValue(tweetsCurrently);
+                    getFavsTweets();
 
                 } else {
                     Toast.makeText(MyApp.getContext(), "Error in Sever. Try again later", Toast.LENGTH_SHORT).show();
@@ -117,6 +152,33 @@ public class TweetRepository {
 
             @Override
             public void onFailure(Call<Tweet> call, Throwable t) {
+                Toast.makeText(MyApp.getContext(), "Trouble connection. Try again please.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void mDeleteTweet(final int idTweet) {
+        Call<ResponseDeleteTweet> call = authMiniTwitterService.mDoDeleteTweet(idTweet);
+        call.enqueue(new Callback<ResponseDeleteTweet>() {
+            @Override
+            public void onResponse(Call<ResponseDeleteTweet> call, Response<ResponseDeleteTweet> response) {
+                if(response.isSuccessful()){
+                    Log.i("DELETE", "Delete succesful");
+                    List<Tweet> tweetsCurrently = new ArrayList<>();
+                    for(int i=0; i <  tweetList.getValue().size(); i++){
+                        if(tweetList.getValue().get(i).getId() != idTweet){
+                            tweetsCurrently.add(new Tweet(tweetList.getValue().get(i)));
+                        }
+                    }
+                    tweetList.setValue(tweetsCurrently);
+                    getFavsTweets();
+                } else {
+                    Toast.makeText(MyApp.getContext(), "Error in Sever. Try again later", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDeleteTweet> call, Throwable t) {
                 Toast.makeText(MyApp.getContext(), "Trouble connection. Try again please.", Toast.LENGTH_SHORT).show();
             }
         });
