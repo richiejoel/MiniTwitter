@@ -30,4 +30,13 @@
     <!-- BottomSheet -->
     <string name="bottom_sheet_delete">Delete Tweet</string>
 
+    <!-- Profile -->
+    <string name="profile_edt_username">Username</string>
+    <string name="profile_edt_email">Email</string>
+    <string name="profile_edt_website">Website</string>
+    <string name="profile_edt_description">Description and Jobs</string>
+    <string name="profile_edt_password">Password Current</string>
+    <string name="profile_btn_save">Save</string>
+    <string name="profile_btn_change_pass">Change Password</string>
+
 </resources>
