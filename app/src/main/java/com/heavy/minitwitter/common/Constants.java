@@ -16,4 +16,7 @@ public class Constants {
 
     //Arguments
     public static final String ARG_TWEET_ID = "TWEET_ID" ;
+
+    //startActivityForRESULT
+    public static final int SELECT_PHOTO_GALLERY = 1;
 }

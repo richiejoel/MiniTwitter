@@ -3,18 +3,22 @@ package com.heavy.minitwitter.retrofit;
 import com.heavy.minitwitter.retrofit.request.RequestCreateTweet;
 import com.heavy.minitwitter.retrofit.request.RequestUserProfile;
 import com.heavy.minitwitter.retrofit.response.ResponseDeleteTweet;
+import com.heavy.minitwitter.retrofit.response.ResponseUploadPhoto;
 import com.heavy.minitwitter.retrofit.response.ResponseUserProfile;
 import com.heavy.minitwitter.retrofit.response.Tweet;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface AuthMiniTwitterService {
@@ -45,6 +49,11 @@ public interface AuthMiniTwitterService {
     @Headers("Content-Type: application/json")
     @PUT("users/profile")
     Call<ResponseUserProfile> mDoUpdateProfile(@Body RequestUserProfile requestUserProfile);
+
+    @Headers("Content-Type: application/json")
+    @Multipart
+    @POST("users/uploadprofilephoto")
+    Call<ResponseUploadPhoto> mDoUploadProfilePhoto(@Part("file\"; filename=\"photo.jpeg\" ") RequestBody file);
 
 
 

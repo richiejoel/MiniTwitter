@@ -1,5 +1,6 @@
 package com.heavy.minitwitter.ui.ui.profile;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,13 +19,19 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.heavy.minitwitter.R;
 import com.heavy.minitwitter.common.Constants;
 import com.heavy.minitwitter.data.ProfileViewModel;
 import com.heavy.minitwitter.data.TweetViewModel;
+import com.heavy.minitwitter.retrofit.request.RequestUserProfile;
 import com.heavy.minitwitter.retrofit.response.ResponseUserProfile;
 import com.heavy.minitwitter.ui.DashboardActivity;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.listener.single.CompositePermissionListener;
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,6 +44,8 @@ public class ProfileFragment extends Fragment {
     private Button btnSave, btnChangePassword;
     private CircleImageView imgAvatarProfile;
     private EditText edtUsernameProfile, edtEmailProfile, edtPasswordCurrentProfile, edtWebsiteProfile, edtDescriptionProfile;
+    boolean loadingData = true;
+    private PermissionListener allPermissionListener;
 
     /*
     private ProfileViewModel notificationsViewModel;
@@ -78,16 +88,38 @@ public class ProfileFragment extends Fragment {
         fab.hide();
 
         btnSave.setOnClickListener(v -> {
-            System.out.println("Hii");
+            String username = edtUsernameProfile.getText().toString();
+            String email = edtEmailProfile.getText().toString();
+            String descripcion = edtDescriptionProfile.getText().toString();
+            String website = edtWebsiteProfile.getText().toString();
+            String password = edtPasswordCurrentProfile.getText().toString();
+
+            if(username.isEmpty()) {
+                edtUsernameProfile.setError("Username is required");
+            } else if(email.isEmpty()) {
+                edtEmailProfile.setError("Email is required");
+            } else if(password.isEmpty()) {
+                edtPasswordCurrentProfile.setError("Pasword is required");
+            } else {
+                RequestUserProfile requestUserProfile = new RequestUserProfile(username, email, descripcion, website, password);
+                profileViewModel.mUpdateProfile(requestUserProfile);
+                Toast.makeText(getActivity(), "Sent information to server", Toast.LENGTH_SHORT).show();
+                btnSave.setEnabled(false);
+            }
         });
 
         btnChangePassword.setOnClickListener(v -> {
             System.out.println("Hii");
         });
 
+        imgAvatarProfile.setOnClickListener(v -> {
+            mCheckPermissions();
+        });
+
         profileViewModel.userProfile.observe(getActivity(), new Observer<ResponseUserProfile>() {
             @Override
             public void onChanged(@Nullable ResponseUserProfile responseUserProfile) {
+                loadingData = false;
                 if(responseUserProfile.getDescripcion().isEmpty()){
                     responseUserProfile.setDescripcion("");
                 }
@@ -99,17 +131,57 @@ public class ProfileFragment extends Fragment {
                 edtWebsiteProfile.setText(responseUserProfile.getWebsite());
                 edtDescriptionProfile.setText(responseUserProfile.getDescripcion());
                 if(!responseUserProfile.getPhotoUrl().isEmpty()) {
-                    Glide.with(getActivity())
+                    Glide.with(getContext())
                             .load(Constants.API_MINITWITTER_FILES_URL + responseUserProfile.getPhotoUrl())
+                            .dontAnimate()
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
                             .into(imgAvatarProfile);
                 }
+                if(!loadingData) {
+                    btnSave.setEnabled(true);
+                    Toast.makeText(getActivity(), "Operation SuccessFull", Toast.LENGTH_SHORT).show();
+                }
             }
+        });
+
+        profileViewModel.photoProfile.observe(getActivity(), photo -> {
+            Glide.with(getContext())
+                    .load(Constants.API_MINITWITTER_FILES_URL + photo)
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .centerCrop()
+                    .skipMemoryCache(true)
+                    .into(imgAvatarProfile);
         });
 
 
 
         return view;
     }
+
+    private void mCheckPermissions() {
+        PermissionListener dialogOnDeniedPermissionListener =
+                DialogOnDeniedPermissionListener.Builder.withContext(getContext())
+                        .withTitle("Permisos")
+                        .withMessage("Los permisos solicitados son necesarios para poder seleccionar una foto de perfil")
+                        .withButtonText("Aceptar")
+                        .withIcon(R.mipmap.ic_launcher)
+                        .build();
+
+        allPermissionListener = new CompositePermissionListener(
+                (PermissionListener) getActivity(),
+                dialogOnDeniedPermissionListener
+        );
+
+        Dexter.withContext(getContext())
+                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .withListener(allPermissionListener)
+                .check();
+
+    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
